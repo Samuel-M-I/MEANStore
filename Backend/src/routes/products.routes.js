@@ -1,5 +1,5 @@
 const express = require('express');
-const {getProductsClient, getProducts, getProductsById,createProducts} = require('../controllers/products.controller');
+const {getProductsClient, getProducts, getProductsById,createProducts,updateProducts,deleteProducts} = require('../controllers/products.controller');
 
 const router = express.Router();
 
@@ -9,8 +9,11 @@ router.get('/public', getProductsClient);
 router.get('/', getProducts);
 //Obtener la descripción de un producto por su id
 router.get('/:id',getProductsById);
-//
+//Crear un nuevo producto (solo para admin/workers)
 router.post('/',createProducts);
-
+//Actualizar un producto (solo para admin/workers)
+router.put('/:id',updateProducts);
+//Eliminar un producto (solo para admin/workers) - Desactiva un proudcto isActive.
+router.delete('/:id',deleteProducts);
 
 module.exports = router;
