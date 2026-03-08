@@ -1,6 +1,6 @@
 const express = require('express');
 const {getProductsClient, getProducts, getProductsById,createProducts,updateProducts,deleteProducts} = require('../controllers/products.controller');
-
+const { protect } = require('../middleware/auth.middleware');
 const router = express.Router();
 
 // Obtener el catalogo publico de productos de stock>0 y productos Activos
@@ -12,12 +12,12 @@ router.get('/:id',getProductsById);
 
 //REQUIERE AUTENTICACION Y ROL DE ADMIN O WORKER    
 // Obtner el catalogo de los productos para admin/workkers incluyendo productos con stock=0 y productos inactivos
-router.get('/', getProducts);
+router.get('/', protect,getProducts);
 //Crear un nuevo producto (solo para admin/workers)
-router.post('/',createProducts);
+router.post('/',protect,createProducts);
 //Actualizar un producto (solo para admin/workers)
-router.put('/:id',updateProducts);
+router.put('/:id',protect,updateProducts);
 //Eliminar un producto (solo para admin/workers) - Desactiva un proudcto isActive.
-router.delete('/:id',deleteProducts);
+router.delete('/:id',protect,deleteProducts);
 
 module.exports = router;

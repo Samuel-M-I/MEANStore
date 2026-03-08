@@ -1,5 +1,6 @@
 const express = require('express');
 const {getCart,addToCart,remove,updateCart} = require('../controllers/cart.controller');
+const { protect } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -7,11 +8,11 @@ const router = express.Router();
 //CLiente Log
 
 // Ruta para obtener el carrito de compras del usuario
-router.get('/',getCart);
+router.get('/',protect,getCart);
 //Ruta para agregar un producto al carrito de compras del usuario
-router.post('/add',addToCart);
-router.put('/update',updateCart);
+router.post('/add',protect,addToCart);
+router.put('/update',protect,updateCart);
 //Ruta para eliminar un producto del carrito de compras del usuario
-router.delete('/delete',remove );
+router.delete('/delete',protect,remove );
 
 module.exports = router;
