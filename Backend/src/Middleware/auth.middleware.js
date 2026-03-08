@@ -18,4 +18,25 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports = { protect };
+// middlewares/roleMiddleware.js
+const authorizenRoles = (...allowedRoles) => {
+    return (req, res, next) => {
+        const userRole = req.usuario?.role; // Asumiendo que req.usuario existe del auth middleware
+        
+        if (!userRole) {
+            return res.status(401).json({ message: 'No autenticado' });
+        }
+        
+        // Verificar si el rol está permitido
+        if (allowedRoles.includes(userRole)) {
+            return next(); // Usuario autorizado, continuar
+        }
+        
+        // Usuario no autorizado
+        return res.status(403).json({ 
+            message: 'Acceso denegado. No tienes permisos suficientes.' 
+        });
+    };
+};
+
+module.exports = { protect, authorizenRoles };

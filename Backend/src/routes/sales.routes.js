@@ -1,6 +1,6 @@
 const express = require('express');
 const {getSales,addSales,getSalesByUser} = require('../controllers/sales.controller');
-const { protect } = require('../middleware/auth.middleware');
+const { protect,authorizenRoles } = require('../middleware/auth.middleware');
 const router = express.Router();
 
 //Cliente requiere LOG
@@ -12,6 +12,6 @@ router.get('/mySales',protect,getSalesByUser );
 //REQUIERE AUTENTICACION Y ROL DE ADMIN O WORKER
 
 // Ruta para obtener Las ventas hechas solo Admins
-router.get('/',protect,getSales);
+router.get('/',protect,authorizenRoles('admin'),getSales);
 
 module.exports = router;
