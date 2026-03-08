@@ -2,10 +2,15 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   name:        { 
-    type: String, required: true, trim: true 
+    type: String,
+    required: true, 
+    trim: true , 
+    minlength: 3, 
+    maxlength: 100
 },
   description: { 
-    type: String, default: '' 
+    type: String, 
+    default: '' 
 },
   price:       { 
     type: Number, 
@@ -13,19 +18,19 @@ const productSchema = new mongoose.Schema({
     min: 0 
 },
   stock:       { 
-    type: 
-    Number, 
+    type:  mongoose.Schema.Types.Int32, 
     required: true, 
     min: 0, 
     default: 0 
 },
   category:    { 
-    type: String, 
-    default: 'General' 
+    type: String,
+    enum: ["Celulares", "Laptops", "Accesorios", "Audífonos", "Tablets", "Cámaras", "Gaming"],
+    default: 'Accesorios' 
 },
   imageUrl:    { 
     type: String, 
-    default: '' 
+    default: '' //Imagen pordefecto en a futuro
 },
   isActive:    { 
     type: Boolean, 

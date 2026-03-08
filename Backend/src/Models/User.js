@@ -4,26 +4,28 @@ const bcrypt   = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   username:     { 
     type: String, 
+    minlength: 3,
+    maxlength: 20,
+    unique: true,
     required: true, 
     trim: true 
 },
   email:        { 
     type: String, 
-    required: true, 
     unique: true, 
     lowercase: true 
 },
-  passwordHash: { 
+  password: { 
     type: String, required: true 
 },
   role:         { 
     type: String, 
-    enum: ['admin', 'worker', 'customer'], 
-    default: 'customer' 
+    enum: ['admin', 'worker', 'client'], 
+    default: 'client' 
 },
   active:       { 
     type: Boolean, 
-    default: true 
+    default: false 
 }
 }, { timestamps: true });
 
@@ -34,10 +36,11 @@ const userSchema = new mongoose.Schema({
 //  next();
 //});
 
-userSchema.pre('save', async function() {
-    if (!this.isModified('password')) return;//garatiza que solo se encripte si ya hay una encriptación previa
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();//garatiza que solo se encripte si ya hay una encriptación previa
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 // Método para comparar contraseña en login
