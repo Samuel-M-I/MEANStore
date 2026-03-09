@@ -1,8 +1,9 @@
-const Sale    = require('../models/sale');
-const Cart    = require('../models/cart');
-const Product = require('../models/product');
+const Sale     = require('../models/sale');
+const Cart     = require('../models/cart');
+const Product  = require('../models/product');
+const AppError = require('../utils/appError');
 
-exports.getSales = async (req, res) => {
+exports.getSales = async (req, res, next) => {
     try {
         const sales = await Sale.find()
             .populate('userId', 'username email')
@@ -10,36 +11,34 @@ exports.getSales = async (req, res) => {
             .select('-__v');
         res.json(sales);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.getSalesByUser = async (req, res) => {
+exports.getSalesByUser = async (req, res, next) => {
     try {
         const sales = await Sale.find({ userId: req.user._id })
             .populate('items.productId', 'name price')
             .select('-__v');
         res.json(sales);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.addSales = async (req, res) => {
+exports.addSales = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id })
             .populate('items.productId');
 
         if (!userCart || userCart.items.length === 0) {
-            return res.status(400).json({ message: 'El carrito está vacío' });
+            return next(new AppError('El carrito está vacío', 400));
         }
 
         for (const item of userCart.items) {
             const foundProduct = item.productId;
             if (foundProduct.stock < item.qty) {
-                return res.status(400).json({
-                    message: `Stock insuficiente para ${foundProduct.name}`
-                });
+                return next(new AppError(`Stock insuficiente para ${foundProduct.name}`, 400));
             }
         }
 
@@ -61,8 +60,7 @@ exports.addSales = async (req, res) => {
         await userCart.save();
 
         res.status(201).json({ message: 'Compra realizada con éxito', sale: newSale });
-
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(new AppError(error.message, 500));
     }
 };

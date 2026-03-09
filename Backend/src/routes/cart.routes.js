@@ -1,18 +1,11 @@
-const express = require('express');
-const {getCart,addToCart,remove,updateCart} = require('../controllers/cart.controller');
-const { protect } = require('../middleware/auth.middleware');
+const router = require('express').Router();
+const { protect }          = require('../middleware/auth.middleware');
+const { validateDataBase } = require('../middleware/dataBase.middleware');
+const { getCart, addToCart, updateCart, remove } = require('../controllers/cart.controller');
 
-const router = express.Router();
-
-
-//CLiente Log
-
-// Ruta para obtener el carrito de compras del usuario
-router.get('/',protect,getCart);
-//Ruta para agregar un producto al carrito de compras del usuario
-router.post('/add/:id',protect,addToCart);
-router.put('/update/:id',protect,updateCart);
-//Ruta para eliminar un producto del carrito de compras del usuario
-router.delete('/delete/:id',protect,remove );
+router.get('/',       validateDataBase, protect, getCart);
+router.post('/:id',   validateDataBase, protect, addToCart);
+router.put('/:id',    validateDataBase, protect, updateCart);
+router.delete('/:id', validateDataBase, protect, remove);
 
 module.exports = router;

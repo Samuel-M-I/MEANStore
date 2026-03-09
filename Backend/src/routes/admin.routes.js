@@ -1,14 +1,10 @@
-const express = require('express');
-const {protect,authorizenRoles} = require('../middleware/auth.middleware');
-const {getUsers,changeUserRole,isActive} = require('../controllers/admin.controller');
+const router = require('express').Router();
+const { protect, authorizenRoles } = require('../middleware/auth.middleware');
+const { validateDataBase }         = require('../middleware/dataBase.middleware');
+const { getUsers, changeUserRole, toggleActive } = require('../controllers/admin.controller');
 
-const router = express.Router();
-
-//Ruta solo para admin para obtener la lista de usuario y trabajadores
-router.get('/users',protect,authorizenRoles('admin'),getUsers);
-//Cambia el rol de un usuario a trabajador o viceversa
-router.put('/users/:userId/role',protect,authorizenRoles('admin'),changeUserRole);
-//Desactiva o activa un los privilegios que tiene un trbajador
-router.patch('/users/:userId/deactivate',authorizenRoles('admin'),protect,isActive);
+router.get('/users',                  validateDataBase, protect, authorizenRoles('admin'), getUsers);
+router.put('/users/:userId/role',     validateDataBase, protect, authorizenRoles('admin'), changeUserRole);
+router.patch('/users/:userId/active', validateDataBase, protect, authorizenRoles('admin'), toggleActive);
 
 module.exports = router;

@@ -1,28 +1,31 @@
-const Cart    = require('../models/cart');
-const Product = require('../models/product');
+const Cart     = require('../models/cart');
+const Product  = require('../models/product');
+const AppError = require('../utils/appError');
 
-exports.getCart = async (req, res) => {
+exports.getCart = async (req, res, next) => {
     try {
-        const userId = req.user._id;
-        const userCart = await Cart.findOne({ userId })
+        const userCart = await Cart.findOne({ userId: req.user._id })
             .populate('items.productId')
             .select('-createdAt -updatedAt -__v');
         if (!userCart) {
-            return res.status(404).json({ message: 'Carrito no encontrado' });
+            return next(new AppError('Carrito no encontrado', 404));
         }
         res.status(200).json(userCart);
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el carrito', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.addToCart = async (req, res) => {
+exports.addToCart = async (req, res, next) => {
     try {
         const foundProduct = await Product.findById(req.params.id);
-        const userCart     = await Cart.findOne({ userId: req.user._id });
+        if (!foundProduct) {
+            return next(new AppError('Producto no encontrado', 404));
+        }
 
-        if (!foundProduct || !userCart) {
-            return res.status(404).json({ message: 'Producto o carrito no encontrado' });
+        const userCart = await Cart.findOne({ userId: req.user._id });
+        if (!userCart) {
+            return next(new AppError('Carrito no encontrado', 404));
         }
 
         userCart.items.push({
@@ -32,47 +35,41 @@ exports.addToCart = async (req, res) => {
         });
         await userCart.save();
         res.status(200).json({ message: 'Producto agregado', cart: userCart });
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al agregar al carrito', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.updateCart = async (req, res) => {
+exports.updateCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
         if (!userCart) {
-            return res.status(404).json({ message: 'Carrito no encontrado' });
+            return next(new AppError('Carrito no encontrado', 404));
         }
-
         const item = userCart.items.find(i => i.productId.toString() === req.params.id);
         if (!item) {
-            return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
+            return next(new AppError('Producto no encontrado en el carrito', 404));
         }
-
         item.qty = req.body.qty;
         await userCart.save();
         res.status(200).json({ message: 'Carrito actualizado', cart: userCart });
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar el carrito', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.remove = async (req, res) => {
+exports.remove = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
         if (!userCart) {
-            return res.status(404).json({ message: 'Carrito no encontrado' });
+            return next(new AppError('Carrito no encontrado', 404));
         }
-
         userCart.items = userCart.items.filter(
             i => i.productId.toString() !== req.params.id
         );
         await userCart.save();
         res.status(200).json({ message: 'Producto eliminado del carrito', cart: userCart });
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar del carrito', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };

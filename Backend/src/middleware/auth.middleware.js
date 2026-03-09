@@ -1,42 +1,44 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const jwt      = require('jsonwebtoken');
+const User     = require('../models/user');
+const AppError = require('../utils/appError');
 
-const protect = async (req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
+exports.protect = async (req, res, next) => {
+    try {
+        let token;
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select('-password -email');
-            next();
-        } catch (error) {
-            res.status(401).json({ message: 'Not authorized, token failed' });
         }
-    } 
-    if (!token) {
-        res.status(401).json({ message: 'Not authorized, no token' });
+
+        if (!token) {
+            throw new AppError('No estás autorizado, no se proporcionó un token', 401);
+        }
+
+        const decoded     = jwt.verify(token, process.env.JWT_SECRET);
+        const currentUser = await User.findById(decoded.id).select('-password');
+
+        if (!currentUser) {
+            throw new AppError('El usuario perteneciente a este token ya no existe', 401);
+        }
+        if (!currentUser.active) {
+            throw new AppError('Tu cuenta ha sido desactivada', 401);
+        }
+
+        req.user = currentUser;
+        next();
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError') {
+            return next(new AppError('Token inválido. Por favor inicia sesión de nuevo', 401));
+        }
+        if (error.name === 'TokenExpiredError') {
+            return next(new AppError('Tu sesión ha expirado. Por favor inicia sesión de nuevo', 401));
+        }
+        next(error);
     }
 };
 
-// middlewares/roleMiddleware.js
-const authorizenRoles = (...allowedRoles) => {
-    return (req, res, next) => {
-        const userRole = req.usuario?.role; // Asumiendo que req.usuario existe del auth middleware
-        
-        if (!userRole) {
-            return res.status(401).json({ message: 'No autenticado' });
-        }
-        
-        // Verificar si el rol está permitido
-        if (allowedRoles.includes(userRole)) {
-            return next(); // Usuario autorizado, continuar
-        }
-        
-        // Usuario no autorizado
-        return res.status(403).json({ 
-            message: 'Acceso denegado. No tienes permisos suficientes.' 
-        });
-    };
+exports.authorizenRoles = (...roles) => (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+        return next(new AppError('Acceso denegado: rol insuficiente', 403));
+    }
+    next();
 };
-
-module.exports = { protect, authorizenRoles };

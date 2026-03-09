@@ -1,20 +1,14 @@
-const User = require('../models/user');
-const jwt  = require('jsonwebtoken');
+const User     = require('../models/user');
+const jwt      = require('jsonwebtoken');
+const AppError = require('../utils/appError');
 
 const generateToken = (id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
-// POST /auth/register
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
-
-        const exists = await User.findOne({ email });
-        if (exists) {
-            return res.status(400).json({ message: 'El correo ya está registrado' });
-        }
-
         const newUser = await User.create({ username, email, password });
 
         res.status(201).json({
@@ -23,26 +17,20 @@ exports.register = async (req, res) => {
             email:    newUser.email,
             token:    generateToken(newUser._id, newUser.role)
         });
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al registrar el usuario', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };
 
-// POST /auth/login
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
 
         const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(401).json({ message: 'Credenciales inválidas' });
-        }
+        if (!user) return next(new AppError('Credenciales inválidas', 401));
 
         const isMatch = await user.matchPassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Credenciales inválidas' });
-        }
+        if (!isMatch) return next(new AppError('Credenciales inválidas', 401));
 
         res.json({
             id:       user._id,
@@ -50,8 +38,7 @@ exports.login = async (req, res) => {
             role:     user.role,
             token:    generateToken(user._id, user.role)
         });
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
+        next(new AppError(error.message, 500));
     }
 };

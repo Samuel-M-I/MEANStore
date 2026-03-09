@@ -1,38 +1,40 @@
-const User = require('../models/user');
+const User     = require('../models/user');
+const AppError = require('../utils/appError');
 
-exports.getUsers = async(req,res)=>{
-    try{
-        usuarios= await User.find().select('-password -__v -createdAt -updatedAt')  ;
+exports.getUsers = async (req, res, next) => {
+    try {
+        const usuarios = await User.find()
+            .select('-password -__v -createdAt -updatedAt');
         res.json(usuarios);
-    }catch(error){
-        res.status(500).json({ message: error.message });
+    } catch (error) {
+        next(new AppError(error.message, 500));
     }
 };
 
-exports.changeUserRole = async(req,res)=>{
-    try{
+exports.changeUserRole = async (req, res, next) => {
+    try {
         const user = await User.findById(req.params.userId);
-        if(!user){
-            return res.status(404).json({message:'Usuario no encontrado'});
+        if (!user) {
+            return next(new AppError('Usuario no encontrado', 404));
         }
-        user.role = req.params.role;
+        user.role = req.body.role;
         await user.save();
-        res.json({message:'Rol actualizado',user});
-    }catch(error){
-        res.status(500).json({ message: error.message });
+        res.json({ message: 'Rol actualizado', user });
+    } catch (error) {
+        next(new AppError(error.message, 500));
     }
 };
-exports.isActive = async(req,res)=>{
-    try{
+
+exports.toggleActive = async (req, res, next) => {
+    try {
         const user = await User.findById(req.params.userId);
-        if(!user){
-            return res.status(404).json({message:'Usuario no encontrado'});
+        if (!user) {
+            return next(new AppError('Usuario no encontrado', 404));
         }
         user.active = !user.active;
         await user.save();
-        res.json({message:'Estado actualizado',user});  
-
-    }catch(error){
-        res.status(500).json({ message: error.message });
+        res.json({ message: `Usuario ${user.active ? 'activado' : 'desactivado'}`, user });
+    } catch (error) {
+        next(new AppError(error.message, 500));
     }
 };

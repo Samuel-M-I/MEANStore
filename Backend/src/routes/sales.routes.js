@@ -1,17 +1,10 @@
-const express = require('express');
-const {getSales,addSales,getSalesByUser} = require('../controllers/sales.controller');
-const { protect,authorizenRoles } = require('../middleware/auth.middleware');
-const router = express.Router();
+const router = require('express').Router();
+const { protect, authorizenRoles } = require('../middleware/auth.middleware');
+const { validateDataBase }         = require('../middleware/dataBase.middleware');
+const { getSales, addSales, getSalesByUser } = require('../controllers/sales.controller');
 
-//Cliente requiere LOG
-//Ruta para agregar una venta de un producto
-router.post('/add',protect,addSales);
-//Ruta para mirar tus compras
-router.get('/mySales',protect,getSalesByUser );
-
-//REQUIERE AUTENTICACION Y ROL DE ADMIN O WORKER
-
-// Ruta para obtener Las ventas hechas solo Admins
-router.get('/',protect,authorizenRoles('admin'),getSales);
+router.post('/add',    validateDataBase, protect, addSales);
+router.get('/mySales', validateDataBase, protect, getSalesByUser);
+router.get('/',        validateDataBase, protect, authorizenRoles('admin'), getSales);
 
 module.exports = router;

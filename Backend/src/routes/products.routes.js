@@ -1,23 +1,17 @@
-const express = require('express');
-const {getProductsClient, getProducts, getProductsById,createProducts,updateProducts,deleteProducts} = require('../controllers/products.controller');
-const { protect ,authorizenRoles} = require('../middleware/auth.middleware');
-const router = express.Router();
+const router = require('express').Router();
+const { protect, authorizenRoles }              = require('../middleware/auth.middleware');
+const { validateDataBase }                      = require('../middleware/dataBase.middleware');
+const { validateProduct, validateUpdateProduct } = require('../middleware/productValidator.middleware');
+const {
+    getProductsClient, getProducts, getProductsById,
+    createProducts, updateProducts, deleteProducts
+} = require('../controllers/products.controller');
 
-// Obtener el catalogo publico de productos de stock>0 y productos Activos
-router.get('/public', getProductsClient);
-//Obtener la descripción de un producto por su id
-router.get('/:id',getProductsById);
-
-
-
-//REQUIERE AUTENTICACION Y ROL DE ADMIN O WORKER    
-// Obtner el catalogo de los productos para admin/workkers incluyendo productos con stock=0 y productos inactivos
-router.get('/', protect,authorizenRoles('worker','admin'),getProducts);
-//Crear un nuevo producto (solo para admin/workers)
-router.post('/',protect,authorizenRoles('worker','admin'),createProducts);
-//Actualizar un producto (solo para admin/workers)
-router.put('/:id',protect,authorizenRoles('worker','admin'),updateProducts);
-//Eliminar un producto (solo para admin/workers) - Desactiva un proudcto isActive.
-router.delete('/:id',protect,authorizenRoles('worker','admin'),deleteProducts);
+router.get('/public',  validateDataBase, getProductsClient);
+router.get('/',        validateDataBase, protect, getProducts);
+router.get('/:id',     validateDataBase, protect, getProductsById);
+router.post('/',       validateDataBase, protect, authorizenRoles('admin','worker'), validateProduct,       createProducts);
+router.put('/:id',     validateDataBase, protect, authorizenRoles('admin','worker'), validateUpdateProduct, updateProducts);
+router.delete('/:id',  validateDataBase, protect, authorizenRoles('admin','worker'), deleteProducts);
 
 module.exports = router;
