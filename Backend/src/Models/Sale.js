@@ -30,6 +30,9 @@ const saleSchema = new mongoose.Schema({
     default: Date.now 
 }
 });
+saleSchema.methods.cleanItems = function() {
+  this.items =[];
+};
 // ✅ Método para calcular total
 saleSchema.methods.calcularTotal = function() {
   return this.items.reduce((total, item) => {
