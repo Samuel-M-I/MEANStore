@@ -10,9 +10,9 @@ const router = express.Router();
 // Ruta para obtener el carrito de compras del usuario
 router.get('/',protect,getCart);
 //Ruta para agregar un producto al carrito de compras del usuario
-router.post('/add',protect,addToCart);
-router.put('/update',protect,updateCart);
+router.post('/add/:id',protect,addToCart);
+router.put('/update/:id',protect,updateCart);
 //Ruta para eliminar un producto del carrito de compras del usuario
-router.delete('/delete',protect,remove );
+router.delete('/delete/:id',protect,remove );
 
 module.exports = router;
