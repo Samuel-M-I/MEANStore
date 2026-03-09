@@ -1,6 +1,4 @@
-const Products =requiere('../Models/Product.js');
-
-
+const Products = require('../models/product');
 
 exports.getProductsClient = async (req,res)=>{
     try{
@@ -39,7 +37,7 @@ exports.createProducts =async(req,res)=>{
     try{
 
         const {name,description,price,stock,category,imageUrl} = req.body;
-        const newProduct = Products.create({
+        const newProduct = await Products.create({
             name,
             description,
             price,

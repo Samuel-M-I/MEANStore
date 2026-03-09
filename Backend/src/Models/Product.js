@@ -18,12 +18,12 @@ const productSchema = new mongoose.Schema({
     required: true, 
     min: 0 
 },
-  stock:       { 
-    type:  mongoose.Schema.Types.Int32, 
+  stock: { 
+    type: Number, 
     required: true, 
     min: 0, 
     default: 0 
-},
+  },
   category:    { 
     type: String,
     enum: ["Celulares", "Laptops", "Accesorios", "Audífonos", "Tablets", "Cámaras", "Gaming"],

@@ -25,16 +25,9 @@ const userSchema = new mongoose.Schema({
 },
   active:       { 
     type: Boolean, 
-    default: false 
+    default: true 
 }
 }, { timestamps: true });
-
-// Hash automático antes de guardar
-//userSchema.pre('save', async function(next) {
-//  if (!this.isModified('passwordHash')) return next();
-//  this.passwordHash = await bcrypt.hash(this.passwordHash, 10);
-//  next();
-//});
 
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();//garatiza que solo se encripte si ya hay una encriptación previa
@@ -42,11 +35,6 @@ userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
-
-// Método para comparar contraseña en login
-//userSchema.methods.comparePassword = function(passwordPlana) {
-//  return bcrypt.compare(passwordPlana, this.passwordHash);
-//};
 
 userSchema.methods.matchPassword = async function(enteredPassword) {
     // 'this.password' se refiere a la contraseña encriptada del documento actual
