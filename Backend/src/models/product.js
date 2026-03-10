@@ -9,9 +9,10 @@ const productSchema = new mongoose.Schema({
     minlength: 3, 
     maxlength: 100
 },
-  description: { 
-    type: String, 
-    default: '' 
+  description: {
+    type: String,
+    default: '',
+    maxlength: 500
 },
   price:       { 
     type: Number, 
