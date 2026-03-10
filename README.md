@@ -1,4 +1,3 @@
-```markdown
 # MeanStore — Backend API
 
 API REST desarrollada con Node.js + Express + MongoDB como parte del stack MEAN.
@@ -11,54 +10,54 @@ API REST desarrollada con Node.js + Express + MongoDB como parte del stack MEAN.
 - **bcryptjs** — encriptación de contraseñas
 
 ## 📁 Estructura del proyecto
-```
 
+```
 Backend/
 ├── src/
-│ ├── config/
-│ │ └── db.js ← conexión a MongoDB
-│ ├── controllers/
-│ │ ├── auth.controller.js ← registro, login y promote-admin
-│ │ ├── products.controller.js ← CRUD de productos
-│ │ ├── cart.controller.js ← carrito de compras
-│ │ ├── sales.controller.js ← ventas y compras
-│ │ └── admin.controller.js ← gestión de usuarios
-│ ├── middleware/
-│ │ ├── auth.middleware.js ← verificación de JWT y roles
-│ │ ├── authValidator.middleware.js ← validación de datos de auth
-│ │ ├── productValidator.middleware.js ← validación de productos
-│ │ ├── cartValidator.middleware.js ← validación de carrito y stock
-│ │ ├── adminSecret.middleware.js ← validación de clave secreta admin
-│ │ └── dataBase.middleware.js ← verificación de conexión BD
-│ ├── models/
-│ │ ├── user.js ← modelo de usuario
-│ │ ├── product.js ← modelo de producto
-│ │ ├── cart.js ← modelo de carrito
-│ │ └── sale.js ← modelo de venta
-│ ├── routes/
-│ │ ├── auth.routes.js ← /auth
-│ │ ├── products.routes.js ← /products
-│ │ ├── cart.routes.js ← /cart
-│ │ ├── sales.routes.js ← /sales
-│ │ └── admin.routes.js ← /admin
-│ ├── utils/
-│ │ └── appError.js ← clase de errores personalizados
-│ ├── seed.js ← datos de prueba
-│ ├── app.js ← configuración de Express
-│ └── server.js ← punto de entrada
+│   ├── config/
+│   │   └── db.js                            ← conexión a MongoDB
+│   ├── controllers/
+│   │   ├── auth.controller.js               ← registro, login y promote-admin
+│   │   ├── products.controller.js           ← CRUD de productos
+│   │   ├── cart.controller.js               ← carrito de compras
+│   │   ├── sales.controller.js              ← ventas y compras
+│   │   └── admin.controller.js              ← gestión de usuarios
+│   ├── middleware/
+│   │   ├── auth.middleware.js               ← verificación de JWT y roles
+│   │   ├── authValidator.middleware.js      ← validación de datos de auth
+│   │   ├── productValidator.middleware.js   ← validación de productos
+│   │   ├── cartValidator.middleware.js      ← validación de carrito y stock
+│   │   ├── adminSecret.middleware.js        ← validación de clave secreta admin
+│   │   └── dataBase.middleware.js           ← verificación de conexión BD
+│   ├── models/
+│   │   ├── user.js                          ← modelo de usuario
+│   │   ├── product.js                       ← modelo de producto
+│   │   ├── cart.js                          ← modelo de carrito
+│   │   └── sale.js                          ← modelo de venta
+│   ├── routes/
+│   │   ├── auth.routes.js                   ← /auth
+│   │   ├── products.routes.js               ← /products
+│   │   ├── cart.routes.js                   ← /cart
+│   │   ├── sales.routes.js                  ← /sales
+│   │   └── admin.routes.js                  ← /admin
+│   ├── utils/
+│   │   └── appError.js                      ← clase de errores personalizados
+│   ├── seed.js                              ← datos de prueba
+│   ├── app.js                               ← configuración de Express
+│   └── server.js                            ← punto de entrada
 ├── .env
 ├── .gitignore
 └── package.json
-
-````
+```
 
 ## ⚙️ Instalación
 
 **1. Clonar el repositorio**
+
 ```bash
 git clone https://github.com/Samuel-M-I/MEANStore.git
 cd MEANStore/Backend
-````
+```
 
 **2. Instalar dependencias**
 
@@ -263,13 +262,3 @@ Ejecutar `npm run seed` para crear estos usuarios automáticamente:
 | dotenv       | ^17.3.1 | Variables de entorno     |
 | cors         | ^2.8.6  | Control de origen        |
 | nodemon      | ^3.1.14 | Hot reload en desarrollo |
-
-````
-
----
-
-```bash
-git add README.md
-git commit -m "docs: actualizar README con nuevas rutas y tabla de acceso por rol"
-git push
-````
