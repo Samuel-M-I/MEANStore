@@ -8,6 +8,7 @@ const {
     getDashboard
 } = require('../controllers/admin.controller');
 
+// 🔒 ADMIN ────────────────────────────────────
 router.get('/dashboard',              validateDataBase, protect, authorizenRoles('admin'), getDashboard);
 router.get('/users',                  validateDataBase, protect, authorizenRoles('admin'), getUsers);
 router.put('/users/:userId/role',     validateDataBase, protect, authorizenRoles('admin'), changeUserRole);

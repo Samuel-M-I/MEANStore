@@ -4,8 +4,11 @@ const { validateRegister, validateLogin }     = require('../middleware/authValid
 const { validateDataBase }                    = require('../middleware/dataBase.middleware');
 const { validateAdminSecret }                 = require('../middleware/adminSecret.middleware');
 
-router.post('/register',      validateDataBase, validateRegister, register);
-router.post('/login',         validateDataBase, validateLogin,    login);
+// 🌐 PÚBLICO ──────────────────────────────────
+router.post('/register', validateDataBase, validateRegister, register);
+router.post('/login',    validateDataBase, validateLogin,    login);
+
+// 🔑 CLAVE SECRETA (x-admin-secret en header) ─
 router.patch('/promote-admin', validateDataBase, validateAdminSecret, promoteAdmin);
 
 module.exports = router;
