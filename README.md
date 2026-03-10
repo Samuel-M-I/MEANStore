@@ -1,3 +1,4 @@
+```markdown
 # MeanStore — Backend API
 
 API REST desarrollada con Node.js + Express + MongoDB como parte del stack MEAN.
@@ -10,53 +11,54 @@ API REST desarrollada con Node.js + Express + MongoDB como parte del stack MEAN.
 - **bcryptjs** — encriptación de contraseñas
 
 ## 📁 Estructura del proyecto
-
 ```
+
 Backend/
 ├── src/
-│   ├── config/
-│   │   └── db.js                            ← conexión a MongoDB
-│   ├── controllers/
-│   │   ├── auth.controller.js               ← registro, login y promote-admin
-│   │   ├── products.controller.js           ← CRUD de productos
-│   │   ├── cart.controller.js               ← carrito de compras
-│   │   ├── sales.controller.js              ← ventas y compras
-│   │   └── admin.controller.js              ← gestión de usuarios
-│   ├── middleware/
-│   │   ├── auth.middleware.js               ← verificación de JWT y roles
-│   │   ├── authValidator.middleware.js      ← validación de datos de auth
-│   │   ├── productValidator.middleware.js   ← validación de productos
-│   │   ├── cartValidator.middleware.js      ← validación de carrito y stock
-│   │   ├── adminSecret.middleware.js        ← validación de clave secreta admin
-│   │   └── dataBase.middleware.js           ← verificación de conexión BD
-│   ├── models/
-│   │   ├── user.js                          ← modelo de usuario
-│   │   ├── product.js                       ← modelo de producto
-│   │   ├── cart.js                          ← modelo de carrito
-│   │   └── sale.js                          ← modelo de venta
-│   ├── routes/
-│   │   ├── auth.routes.js                   ← /auth
-│   │   ├── products.routes.js               ← /products
-│   │   ├── cart.routes.js                   ← /cart
-│   │   ├── sales.routes.js                  ← /sales
-│   │   └── admin.routes.js                  ← /admin
-│   ├── utils/
-│   │   └── appError.js                      ← clase de errores personalizados
-│   ├── app.js                               ← configuración de Express
-│   └── server.js                            ← punto de entrada
+│ ├── config/
+│ │ └── db.js ← conexión a MongoDB
+│ ├── controllers/
+│ │ ├── auth.controller.js ← registro, login y promote-admin
+│ │ ├── products.controller.js ← CRUD de productos
+│ │ ├── cart.controller.js ← carrito de compras
+│ │ ├── sales.controller.js ← ventas y compras
+│ │ └── admin.controller.js ← gestión de usuarios
+│ ├── middleware/
+│ │ ├── auth.middleware.js ← verificación de JWT y roles
+│ │ ├── authValidator.middleware.js ← validación de datos de auth
+│ │ ├── productValidator.middleware.js ← validación de productos
+│ │ ├── cartValidator.middleware.js ← validación de carrito y stock
+│ │ ├── adminSecret.middleware.js ← validación de clave secreta admin
+│ │ └── dataBase.middleware.js ← verificación de conexión BD
+│ ├── models/
+│ │ ├── user.js ← modelo de usuario
+│ │ ├── product.js ← modelo de producto
+│ │ ├── cart.js ← modelo de carrito
+│ │ └── sale.js ← modelo de venta
+│ ├── routes/
+│ │ ├── auth.routes.js ← /auth
+│ │ ├── products.routes.js ← /products
+│ │ ├── cart.routes.js ← /cart
+│ │ ├── sales.routes.js ← /sales
+│ │ └── admin.routes.js ← /admin
+│ ├── utils/
+│ │ └── appError.js ← clase de errores personalizados
+│ ├── seed.js ← datos de prueba
+│ ├── app.js ← configuración de Express
+│ └── server.js ← punto de entrada
 ├── .env
 ├── .gitignore
 └── package.json
-```
+
+````
 
 ## ⚙️ Instalación
 
 **1. Clonar el repositorio**
-
 ```bash
 git clone https://github.com/Samuel-M-I/MEANStore.git
 cd MEANStore/Backend
-```
+````
 
 **2. Instalar dependencias**
 
@@ -81,7 +83,13 @@ ADMIN_SECRET_KEY=tu_clave_secreta_admin
 net start MongoDB
 ```
 
-**5. Iniciar el servidor**
+**5. Cargar datos de prueba**
+
+```bash
+npm run seed
+```
+
+**6. Iniciar el servidor**
 
 ```bash
 npm run dev
@@ -126,14 +134,15 @@ PUT /admin/users/:id/role  ──► role: "worker"  (el admin decide)
 
 ### Productos — `/products`
 
-| Método | Ruta               | Acceso         | Descripción                       |
-| ------ | ------------------ | -------------- | --------------------------------- |
-| GET    | `/products/public` | Público        | Catálogo visible sin login        |
-| GET    | `/products`        | JWT            | Lista completa con búsqueda `?q=` |
-| GET    | `/products/:id`    | JWT            | Detalle de un producto            |
-| POST   | `/products`        | Admin / Worker | Crear producto                    |
-| PUT    | `/products/:id`    | Admin / Worker | Editar producto                   |
-| DELETE | `/products/:id`    | Admin / Worker | Soft-delete                       |
+| Método | Ruta               | Acceso         | Descripción                                            |
+| ------ | ------------------ | -------------- | ------------------------------------------------------ |
+| GET    | `/products/public` | Público        | Solo productos activos con stock — info básica         |
+| GET    | `/products/user`   | Client         | Productos activos con stock — info completa sin fechas |
+| GET    | `/products`        | Worker / Admin | Todos los productos con toda la información            |
+| GET    | `/products/:id`    | Worker / Admin | Detalle completo de un producto                        |
+| POST   | `/products`        | Worker / Admin | Crear producto                                         |
+| PUT    | `/products/:id`    | Worker / Admin | Editar producto                                        |
+| DELETE | `/products/:id`    | Worker / Admin | Soft-delete — desactiva el producto                    |
 
 ### Carrito — `/cart`
 
@@ -160,6 +169,25 @@ PUT /admin/users/:id/role  ──► role: "worker"  (el admin decide)
 | PUT    | `/admin/users/:userId/role`   | Admin  | Cambiar rol de usuario       |
 | PATCH  | `/admin/users/:userId/active` | Admin  | Activar / desactivar usuario |
 
+## 👁️ Información visible por rol
+
+### Productos
+
+| Campo         | Sin login `/public` | Cliente `/user` | Worker/Admin `/` |
+| ------------- | ------------------- | --------------- | ---------------- |
+| `name`        | ✅                  | ✅              | ✅               |
+| `price`       | ✅                  | ✅              | ✅               |
+| `stock`       | ✅                  | ✅              | ✅               |
+| `category`    | ✅                  | ✅              | ✅               |
+| `imageUrl`    | ✅                  | ✅              | ✅               |
+| `description` | ❌                  | ✅              | ✅               |
+| `isActive`    | ❌                  | ✅              | ✅               |
+| `createdBy`   | ❌                  | ✅ username     | ✅ username      |
+| `createdAt`   | ❌                  | ❌              | ✅               |
+| `updatedAt`   | ❌                  | ❌              | ✅               |
+| Sin stock     | ❌                  | ❌              | ✅               |
+| Inactivos     | ❌                  | ❌              | ✅               |
+
 ## 🛡️ Seguridad
 
 Cada request pasa por estas capas antes de llegar al controlador:
@@ -168,17 +196,18 @@ Cada request pasa por estas capas antes de llegar al controlador:
 Request → validateDataBase → validateDatos → protect → authorizenRoles → Controller
 ```
 
-| Middleware            | Responsabilidad                                 |
-| --------------------- | ----------------------------------------------- |
-| `validateDataBase`    | Verifica que MongoDB esté activo                |
-| `validateRegister`    | Valida campos, formato y duplicados de registro |
-| `validateLogin`       | Valida campos de login                          |
-| `validateProduct`     | Valida campos de productos                      |
-| `validateAddToCart`   | Verifica stock, disponibilidad y cantidad       |
-| `validateUpdateCart`  | Verifica stock al actualizar cantidad           |
-| `validateAdminSecret` | Verifica la clave secreta para promover admin   |
-| `protect`             | Verifica y decodifica el JWT                    |
-| `authorizenRoles`     | Verifica que el rol tenga acceso a la ruta      |
+| Middleware              | Responsabilidad                                                              |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `validateDataBase`      | Verifica que MongoDB esté activo                                             |
+| `validateRegister`      | Valida campos, formato y duplicados de registro                              |
+| `validateLogin`         | Valida campos de login                                                       |
+| `validateProduct`       | Valida nombre, descripción (máx 500 chars), precio, stock entero y categoría |
+| `validateUpdateProduct` | Valida precio no negativo y stock entero al editar                           |
+| `validateAddToCart`     | Verifica stock, disponibilidad y cantidad al agregar                         |
+| `validateUpdateCart`    | Verifica stock al actualizar cantidad                                        |
+| `validateAdminSecret`   | Verifica la clave secreta para promover admin                                |
+| `protect`               | Verifica y decodifica el JWT                                                 |
+| `authorizenRoles`       | Verifica que el rol tenga acceso a la ruta                                   |
 
 ## 🚨 Manejo de errores
 
@@ -200,16 +229,27 @@ Todos los errores retornan este formato:
 | `500`  | Error del servidor | Error interno                               |
 | `503`  | Error del servidor | BD no disponible                            |
 
+## 🧪 Credenciales de prueba
+
+Ejecutar `npm run seed` para crear estos usuarios automáticamente:
+
+| Rol    | Email                | Password   |
+| ------ | -------------------- | ---------- |
+| Admin  | admin@meanstore.com  | Admin1234  |
+| Worker | worker@meanstore.com | Worker1234 |
+| Client | client@meanstore.com | Client1234 |
+
 ## 🧪 Flujo de prueba completo
 
 ```
 1. POST /auth/register        ← crear usuario (carrito se crea automáticamente)
 2. POST /auth/login            ← obtener token JWT
-3. GET  /products/public       ← ver catálogo y copiar _id de producto
-4. POST /cart/:id              ← agregar producto con { "qty": 1 }
-5. GET  /cart                  ← verificar carrito
-6. POST /sales/add             ← confirmar compra (body vacío)
-7. GET  /sales/mySales         ← ver historial de compras
+3. GET  /products/public       ← ver catálogo sin login
+4. GET  /products/user         ← ver catálogo como cliente (requiere token)
+5. POST /cart/:id              ← agregar producto con { "qty": 1 }
+6. GET  /cart                  ← verificar carrito
+7. POST /sales/add             ← confirmar compra (body vacío)
+8. GET  /sales/mySales         ← ver historial de compras
 ```
 
 ## 📦 Dependencias
@@ -223,3 +263,13 @@ Todos los errores retornan este formato:
 | dotenv       | ^17.3.1 | Variables de entorno     |
 | cors         | ^2.8.6  | Control de origen        |
 | nodemon      | ^3.1.14 | Hot reload en desarrollo |
+
+````
+
+---
+
+```bash
+git add README.md
+git commit -m "docs: actualizar README con nuevas rutas y tabla de acceso por rol"
+git push
+````
