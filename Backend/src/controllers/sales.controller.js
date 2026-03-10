@@ -5,11 +5,25 @@ const AppError = require('../utils/appError');
 
 exports.getSales = async (req, res, next) => {
     try {
+        const page  = parseInt(req.query.page)  || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip  = (page - 1) * limit;
+
+        const total = await Sale.countDocuments();
         const sales = await Sale.find()
             .populate('userId', 'username email')
             .populate('items.productId', 'name price')
-            .select('-__v');
-        res.json(sales);
+            .select('-__v')
+            .skip(skip)
+            .limit(limit);
+
+        res.json({
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            sales
+        });
     } catch (error) {
         next(new AppError(error.message, 500));
     }

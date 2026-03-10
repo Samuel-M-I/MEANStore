@@ -13,14 +13,28 @@ exports.getProductsClient = async (req, res, next) => {
 
 exports.getProductsUser = async (req, res, next) => {
     try {
+        const page  = parseInt(req.query.page)  || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip  = (page - 1) * limit;
+
         const query = req.query.q
             ? { name: { $regex: req.query.q, $options: 'i' }, isActive: true, stock: { $gt: 0 } }
             : { isActive: true, stock: { $gt: 0 } };
 
+        const total    = await Product.countDocuments(query);
         const products = await Product.find(query)
             .select('name description price stock category imageUrl isActive createdBy')
-            .populate('createdBy', 'username');
-        res.json(products);
+            .populate('createdBy', 'username')
+            .skip(skip)
+            .limit(limit);
+
+        res.json({
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            products
+        });
     } catch (error) {
         next(new AppError(error.message, 500));
     }
@@ -28,13 +42,28 @@ exports.getProductsUser = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
     try {
+        const page  = parseInt(req.query.page)  || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip  = (page - 1) * limit;
+
         const query = req.query.q
             ? { name: { $regex: req.query.q, $options: 'i' } }
             : {};
+
+        const total    = await Product.countDocuments(query);
         const products = await Product.find(query)
             .select('-__v')
-            .populate('createdBy', 'username');
-        res.json(products);
+            .populate('createdBy', 'username')
+            .skip(skip)
+            .limit(limit);
+
+        res.json({
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            products
+        });
     } catch (error) {
         next(new AppError(error.message, 500));
     }
