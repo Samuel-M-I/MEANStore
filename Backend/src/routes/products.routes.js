@@ -10,6 +10,7 @@ const {
 router.get('/public',  validateDataBase, getProductsClient);
 router.get('/',        validateDataBase, protect, getProducts);
 router.get('/:id',     validateDataBase, protect, getProductsById);
+
 router.post('/',       validateDataBase, protect, authorizenRoles('admin','worker'), validateProduct,       createProducts);
 router.put('/:id',     validateDataBase, protect, authorizenRoles('admin','worker'), validateUpdateProduct, updateProducts);
 router.delete('/:id',  validateDataBase, protect, authorizenRoles('admin','worker'), deleteProducts);

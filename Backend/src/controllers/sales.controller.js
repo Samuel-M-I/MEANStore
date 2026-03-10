@@ -28,6 +28,7 @@ exports.getSalesByUser = async (req, res, next) => {
 
 exports.addSales = async (req, res, next) => {
     try {
+        // 1. Obtener el carrito
         const userCart = await Cart.findOne({ userId: req.user._id })
             .populate('items.productId');
 
@@ -35,6 +36,7 @@ exports.addSales = async (req, res, next) => {
             return next(new AppError('El carrito está vacío', 400));
         }
 
+        // 2. Verificar stock
         for (const item of userCart.items) {
             const foundProduct = item.productId;
             if (foundProduct.stock < item.qty) {
@@ -42,20 +44,33 @@ exports.addSales = async (req, res, next) => {
             }
         }
 
+        // 3. Mapear items
         const items = userCart.items.map(item => ({
             productId: item.productId._id,
             qty:       item.qty,
             unitPrice: item.price
         }));
 
-        const newSale = await Sale.create({ userId: req.user._id, items });
+        // 4. Calcular total
+        const total = userCart.items.reduce((sum, item) => {
+            return sum + (item.qty * item.price);
+        }, 0);
 
+        // 5. Crear la venta con el total calculado
+        const newSale = await Sale.create({ 
+            userId: req.user._id, 
+            items,
+            total
+        });
+
+        // 6. Descontar stock
         for (const item of userCart.items) {
             await Product.findByIdAndUpdate(item.productId._id, {
                 $inc: { stock: -item.qty }
             });
         }
 
+        // 7. Vaciar carrito
         userCart.items = [];
         await userCart.save();
 

@@ -2,20 +2,18 @@ const Cart     = require('../models/cart');
 const Product  = require('../models/product');
 const AppError = require('../utils/appError');
 
+// GET /cart
 exports.getCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id })
-            .populate('items.productId')
-            .select('-createdAt -updatedAt -__v');
-        if (!userCart) {
-            return next(new AppError('Carrito no encontrado', 404));
-        }
+            .populate('items.productId', 'name price imageUrl');
         res.status(200).json(userCart);
     } catch (error) {
         next(new AppError(error.message, 500));
     }
 };
 
+// POST /cart/:id
 exports.addToCart = async (req, res, next) => {
     try {
         const foundProduct = await Product.findById(req.params.id);
@@ -24,13 +22,18 @@ exports.addToCart = async (req, res, next) => {
         }
 
         const userCart = await Cart.findOne({ userId: req.user._id });
-        if (!userCart) {
-            return next(new AppError('Carrito no encontrado', 404));
+
+        // Verificar si el producto ya está en el carrito
+        const itemExists = userCart.items.find(
+            i => i.productId.toString() === req.params.id
+        );
+        if (itemExists) {
+            return next(new AppError('El producto ya está en el carrito', 400));
         }
 
         userCart.items.push({
             productId: foundProduct._id,
-            qty:       req.body.qty,
+            qty:       req.body.qty || 1,
             price:     foundProduct.price
         });
         await userCart.save();
@@ -40,16 +43,18 @@ exports.addToCart = async (req, res, next) => {
     }
 };
 
+// PUT /cart/:id
 exports.updateCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
-        if (!userCart) {
-            return next(new AppError('Carrito no encontrado', 404));
-        }
-        const item = userCart.items.find(i => i.productId.toString() === req.params.id);
+
+        const item = userCart.items.find(
+            i => i.productId.toString() === req.params.id
+        );
         if (!item) {
             return next(new AppError('Producto no encontrado en el carrito', 404));
         }
+
         item.qty = req.body.qty;
         await userCart.save();
         res.status(200).json({ message: 'Carrito actualizado', cart: userCart });
@@ -58,12 +63,11 @@ exports.updateCart = async (req, res, next) => {
     }
 };
 
+// DELETE /cart/:id
 exports.remove = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
-        if (!userCart) {
-            return next(new AppError('Carrito no encontrado', 404));
-        }
+
         userCart.items = userCart.items.filter(
             i => i.productId.toString() !== req.params.id
         );
