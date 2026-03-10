@@ -15,33 +15,35 @@ API REST desarrollada con Node.js + Express + MongoDB como parte del stack MEAN.
 Backend/
 ├── src/
 │   ├── config/
-│   │   └── db.js                        ← conexión a MongoDB
+│   │   └── db.js                            ← conexión a MongoDB
 │   ├── controllers/
-│   │   ├── auth.controller.js           ← registro y login
-│   │   ├── products.controller.js       ← CRUD de productos
-│   │   ├── cart.controller.js           ← carrito de compras
-│   │   ├── sales.controller.js          ← ventas y compras
-│   │   └── admin.controller.js          ← gestión de usuarios
+│   │   ├── auth.controller.js               ← registro, login y promote-admin
+│   │   ├── products.controller.js           ← CRUD de productos
+│   │   ├── cart.controller.js               ← carrito de compras
+│   │   ├── sales.controller.js              ← ventas y compras
+│   │   └── admin.controller.js              ← gestión de usuarios
 │   ├── middleware/
-│   │   ├── auth.middleware.js           ← verificación de JWT y roles
-│   │   ├── authValidator.middleware.js  ← validación de datos de auth
-│   │   ├── productValidator.middleware.js ← validación de productos
-│   │   └── dataBase.middleware.js       ← verificación de conexión BD
+│   │   ├── auth.middleware.js               ← verificación de JWT y roles
+│   │   ├── authValidator.middleware.js      ← validación de datos de auth
+│   │   ├── productValidator.middleware.js   ← validación de productos
+│   │   ├── cartValidator.middleware.js      ← validación de carrito y stock
+│   │   ├── adminSecret.middleware.js        ← validación de clave secreta admin
+│   │   └── dataBase.middleware.js           ← verificación de conexión BD
 │   ├── models/
-│   │   ├── user.js                      ← modelo de usuario
-│   │   ├── product.js                   ← modelo de producto
-│   │   ├── cart.js                      ← modelo de carrito
-│   │   └── sale.js                      ← modelo de venta
+│   │   ├── user.js                          ← modelo de usuario
+│   │   ├── product.js                       ← modelo de producto
+│   │   ├── cart.js                          ← modelo de carrito
+│   │   └── sale.js                          ← modelo de venta
 │   ├── routes/
-│   │   ├── auth.routes.js               ← /auth
-│   │   ├── products.routes.js           ← /products
-│   │   ├── cart.routes.js               ← /cart
-│   │   ├── sales.routes.js              ← /sales
-│   │   └── admin.routes.js              ← /admin
+│   │   ├── auth.routes.js                   ← /auth
+│   │   ├── products.routes.js               ← /products
+│   │   ├── cart.routes.js                   ← /cart
+│   │   ├── sales.routes.js                  ← /sales
+│   │   └── admin.routes.js                  ← /admin
 │   ├── utils/
-│   │   └── appError.js                  ← clase de errores personalizados
-│   ├── app.js                           ← configuración de Express
-│   └── server.js                        ← punto de entrada
+│   │   └── appError.js                      ← clase de errores personalizados
+│   ├── app.js                               ← configuración de Express
+│   └── server.js                            ← punto de entrada
 ├── .env
 ├── .gitignore
 └── package.json
@@ -70,6 +72,7 @@ Crear un archivo `.env` en la raíz de `Backend/` con:
 PORT=4000
 MONGO_URI=mongodb://localhost:27017/meanstore
 JWT_SECRET=tu_secreto_seguro_aqui
+ADMIN_SECRET_KEY=tu_clave_secreta_admin
 ```
 
 **4. Iniciar MongoDB**
@@ -97,16 +100,29 @@ Deberías ver:
 | -------- | ----------------------------------------------------- |
 | `admin`  | Acceso total — usuarios, productos, ventas, dashboard |
 | `worker` | CRUD de productos y registro de ventas                |
-| `client` | Ver catálogo, carrito y historial personal            |
+| `client` | Ver catálogo, carrito e historial personal            |
+
+### Asignación de roles
+
+```
+Registro  ──► role: "client"  (por defecto)
+                    │
+                    ▼
+PATCH /auth/promote-admin + x-admin-secret  ──► role: "admin"
+                    │
+                    ▼
+PUT /admin/users/:id/role  ──► role: "worker"  (el admin decide)
+```
 
 ## 📡 Endpoints
 
 ### Auth — `/auth`
 
-| Método | Ruta             | Acceso  | Descripción               |
-| ------ | ---------------- | ------- | ------------------------- |
-| POST   | `/auth/register` | Público | Registro de nuevo cliente |
-| POST   | `/auth/login`    | Público | Login — retorna JWT       |
+| Método | Ruta                  | Acceso                     | Descripción                                       |
+| ------ | --------------------- | -------------------------- | ------------------------------------------------- |
+| POST   | `/auth/register`      | Público                    | Registro — crea usuario y carrito automáticamente |
+| POST   | `/auth/login`         | Público                    | Login — retorna JWT                               |
+| PATCH  | `/auth/promote-admin` | `x-admin-secret` en header | Promueve un usuario a admin                       |
 
 ### Productos — `/products`
 
@@ -121,20 +137,20 @@ Deberías ver:
 
 ### Carrito — `/cart`
 
-| Método | Ruta        | Acceso | Descripción                   |
-| ------ | ----------- | ------ | ----------------------------- |
-| GET    | `/cart`     | JWT    | Ver carrito del usuario       |
-| POST   | `/cart/:id` | JWT    | Agregar producto al carrito   |
-| PUT    | `/cart/:id` | JWT    | Actualizar cantidad           |
-| DELETE | `/cart/:id` | JWT    | Eliminar producto del carrito |
+| Método | Ruta        | Acceso | Descripción                                      |
+| ------ | ----------- | ------ | ------------------------------------------------ |
+| GET    | `/cart`     | JWT    | Ver carrito del usuario                          |
+| POST   | `/cart/:id` | JWT    | Agregar producto — valida stock y disponibilidad |
+| PUT    | `/cart/:id` | JWT    | Actualizar cantidad — valida stock               |
+| DELETE | `/cart/:id` | JWT    | Eliminar producto del carrito                    |
 
 ### Ventas — `/sales`
 
-| Método | Ruta             | Acceso | Descripción                        |
-| ------ | ---------------- | ------ | ---------------------------------- |
-| POST   | `/sales/add`     | JWT    | Confirmar compra y descontar stock |
-| GET    | `/sales/mySales` | JWT    | Historial personal del cliente     |
-| GET    | `/sales`         | Admin  | Todas las ventas del sistema       |
+| Método | Ruta             | Acceso | Descripción                                        |
+| ------ | ---------------- | ------ | -------------------------------------------------- |
+| POST   | `/sales/add`     | JWT    | Confirmar compra — descuenta stock y vacía carrito |
+| GET    | `/sales/mySales` | JWT    | Historial personal del cliente                     |
+| GET    | `/sales`         | Admin  | Todas las ventas del sistema                       |
 
 ### Admin — `/admin`
 
@@ -152,10 +168,17 @@ Cada request pasa por estas capas antes de llegar al controlador:
 Request → validateDataBase → validateDatos → protect → authorizenRoles → Controller
 ```
 
-- **validateDataBase** — verifica que MongoDB esté activo
-- **validateDatos** — valida que los campos requeridos estén presentes y con formato correcto
-- **protect** — verifica y decodifica el JWT
-- **authorizenRoles** — verifica que el rol del usuario tenga acceso a la ruta
+| Middleware            | Responsabilidad                                 |
+| --------------------- | ----------------------------------------------- |
+| `validateDataBase`    | Verifica que MongoDB esté activo                |
+| `validateRegister`    | Valida campos, formato y duplicados de registro |
+| `validateLogin`       | Valida campos de login                          |
+| `validateProduct`     | Valida campos de productos                      |
+| `validateAddToCart`   | Verifica stock, disponibilidad y cantidad       |
+| `validateUpdateCart`  | Verifica stock al actualizar cantidad           |
+| `validateAdminSecret` | Verifica la clave secreta para promover admin   |
+| `protect`             | Verifica y decodifica el JWT                    |
+| `authorizenRoles`     | Verifica que el rol tenga acceso a la ruta      |
 
 ## 🚨 Manejo de errores
 
@@ -168,14 +191,26 @@ Todos los errores retornan este formato:
 }
 ```
 
-| Status | Tipo               | Ejemplo                   |
-| ------ | ------------------ | ------------------------- |
-| `400`  | Error del cliente  | Campo requerido faltante  |
-| `401`  | Error del cliente  | Token inválido o expirado |
-| `403`  | Error del cliente  | Rol insuficiente          |
-| `404`  | Error del cliente  | Recurso no encontrado     |
-| `500`  | Error del servidor | Error interno             |
-| `503`  | Error del servidor | BD no disponible          |
+| Status | Tipo               | Ejemplo                                     |
+| ------ | ------------------ | ------------------------------------------- |
+| `400`  | Error del cliente  | Campo requerido faltante o duplicado        |
+| `401`  | Error del cliente  | Token inválido, expirado o no proporcionado |
+| `403`  | Error del cliente  | Rol insuficiente o clave secreta incorrecta |
+| `404`  | Error del cliente  | Recurso no encontrado                       |
+| `500`  | Error del servidor | Error interno                               |
+| `503`  | Error del servidor | BD no disponible                            |
+
+## 🧪 Flujo de prueba completo
+
+```
+1. POST /auth/register        ← crear usuario (carrito se crea automáticamente)
+2. POST /auth/login            ← obtener token JWT
+3. GET  /products/public       ← ver catálogo y copiar _id de producto
+4. POST /cart/:id              ← agregar producto con { "qty": 1 }
+5. GET  /cart                  ← verificar carrito
+6. POST /sales/add             ← confirmar compra (body vacío)
+7. GET  /sales/mySales         ← ver historial de compras
+```
 
 ## 📦 Dependencias
 
