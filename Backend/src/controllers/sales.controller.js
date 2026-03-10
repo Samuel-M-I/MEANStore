@@ -26,6 +26,7 @@ exports.getSales = async (req, res, next) => {
 
         res.json({ total, page, limit, totalPages: Math.ceil(total / limit), sales });
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -41,8 +42,10 @@ exports.getSalesByUser = async (req, res, next) => {
         const sales = await Sale.find({ userId: req.user._id })
             .populate('items.productId', 'name price')
             .select('-__v');
+
         res.json(sales);
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -66,16 +69,14 @@ exports.addSales = async (req, res, next) => {
         const userCart = await Cart.findOne({ userId: req.user._id })
             .populate('items.productId');
 
-        if (!userCart || userCart.items.length === 0) {
+        if (!userCart || userCart.items.length === 0)
             return next(new AppError('El carrito está vacío', 400));
-        }
 
         // 2. Verificar que hay stock suficiente antes de procesar la compra
         for (const item of userCart.items) {
             const foundProduct = item.productId;
-            if (foundProduct.stock < item.qty) {
+            if (foundProduct.stock < item.qty) 
                 return next(new AppError(`Stock insuficiente para ${foundProduct.name}`, 400));
-            }
         }
 
         // 3. Convertir los items del carrito al formato que espera el modelo Sale
@@ -106,6 +107,7 @@ exports.addSales = async (req, res, next) => {
 
         res.status(201).json({ message: 'Compra realizada con éxito', sale: newSale });
     } catch (error) {
+        
         next(new AppError(error.message, 500));
     }
 };

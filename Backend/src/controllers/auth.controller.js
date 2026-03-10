@@ -33,6 +33,7 @@ exports.register = async (req, res, next) => {
             token:    generateToken(newUser._id, newUser.role)
         });
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -49,17 +50,17 @@ exports.login = async (req, res, next) => {
         const { username, password } = req.body;
 
         const user = await User.findOne({ username });
-        if (!user) return next(new AppError('Credenciales inválidas', 401));
-
+        if (!user) 
+            return next(new AppError('Credenciales inválidas', 401));
         const isMatch = await user.matchPassword(password);
-        if (!isMatch) return next(new AppError('Credenciales inválidas', 401));
+        if (!isMatch) 
+            return next(new AppError('Credenciales inválidas', 401));
 
         // Seguro de respaldo — crea el carrito si no existe
         const cartExists = await Cart.findOne({ userId: user._id });
-        if (!cartExists) {
+        if (!cartExists) 
             await Cart.create({ userId: user._id, items: [] });
-        }
-
+        
         res.json({
             id:       user._id,
             username: user.username,
@@ -67,6 +68,7 @@ exports.login = async (req, res, next) => {
             token:    generateToken(user._id, user.role)
         });
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -82,9 +84,10 @@ exports.promoteAdmin = async (req, res, next) => {
         const { username } = req.body;
 
         const user = await User.findOne({ username });
-        if (!user) return next(new AppError('Usuario no encontrado', 404));
-        if (user.role === 'admin') return next(new AppError('El usuario ya es administrador', 400));
-
+        if (!user) 
+            return next(new AppError('Usuario no encontrado', 404));
+        if (user.role === 'admin') 
+            return next(new AppError('El usuario ya es administrador', 400));
         user.role = 'admin';
         await user.save();
 
@@ -93,6 +96,7 @@ exports.promoteAdmin = async (req, res, next) => {
             user: { id: user._id, username: user.username, role: user.role }
         });
     } catch (error) {
+        
         next(new AppError(error.message, 500));
     }
 };

@@ -11,8 +11,10 @@ exports.getCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id })
             .populate('items.productId', 'name price imageUrl');
+
         res.status(200).json(userCart);
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -28,28 +30,25 @@ exports.getCart = async (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
     try {
         const foundProduct = await Product.findById(req.params.id);
-        if (!foundProduct) {
+        if (!foundProduct)
             return next(new AppError('Producto no encontrado', 404));
-        }
-
         const userCart = await Cart.findOne({ userId: req.user._id });
-
         // Verificación adicional de duplicado en el controller
         const itemExists = userCart.items.find(
             i => i.productId.toString() === req.params.id
         );
-        if (itemExists) {
+        if (itemExists)
             return next(new AppError('El producto ya está en el carrito', 400));
-        }
-
         userCart.items.push({
             productId: foundProduct._id,
             qty:       req.body.qty || 1,
             price:     foundProduct.price
         });
         await userCart.save();
+
         res.status(200).json({ message: 'Producto agregado', cart: userCart });
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -64,18 +63,17 @@ exports.addToCart = async (req, res, next) => {
 exports.updateCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
-
         const item = userCart.items.find(
             i => i.productId.toString() === req.params.id
         );
-        if (!item) {
+        if (!item)
             return next(new AppError('Producto no encontrado en el carrito', 404));
-        }
-
         item.qty = req.body.qty;
         await userCart.save();
+
         res.status(200).json({ message: 'Carrito actualizado', cart: userCart });
     } catch (error) {
+
         next(new AppError(error.message, 500));
     }
 };
@@ -94,8 +92,10 @@ exports.remove = async (req, res, next) => {
             i => i.productId.toString() !== req.params.id
         );
         await userCart.save();
+
         res.status(200).json({ message: 'Producto eliminado del carrito', cart: userCart });
     } catch (error) {
+        
         next(new AppError(error.message, 500));
     }
 };
