@@ -4,7 +4,22 @@ const AppError = require('../utils/appError');
 exports.getProductsClient = async (req, res, next) => {
     try {
         const products = await Product.find({ stock: { $gt: 0 }, isActive: true })
-            .select('-description -createdBy -updatedAt -__v -isActive');
+            .select('name price stock category imageUrl');
+        res.json(products);
+    } catch (error) {
+        next(new AppError(error.message, 500));
+    }
+};
+
+exports.getProductsUser = async (req, res, next) => {
+    try {
+        const query = req.query.q
+            ? { name: { $regex: req.query.q, $options: 'i' }, isActive: true, stock: { $gt: 0 } }
+            : { isActive: true, stock: { $gt: 0 } };
+
+        const products = await Product.find(query)
+            .select('name description price stock category imageUrl isActive createdBy')
+            .populate('createdBy', 'username');
         res.json(products);
     } catch (error) {
         next(new AppError(error.message, 500));
@@ -14,9 +29,11 @@ exports.getProductsClient = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
     try {
         const query = req.query.q
-            ? { name: { $regex: req.query.q, $options: 'i' }, isActive: true }
+            ? { name: { $regex: req.query.q, $options: 'i' } }
             : {};
-        const products = await Product.find(query).select('-__v -updatedAt');
+        const products = await Product.find(query)
+            .select('-__v')
+            .populate('createdBy', 'username');
         res.json(products);
     } catch (error) {
         next(new AppError(error.message, 500));
