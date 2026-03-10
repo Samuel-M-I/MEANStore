@@ -2,7 +2,11 @@ const Cart     = require('../models/cart');
 const Product  = require('../models/product');
 const AppError = require('../utils/appError');
 
-// GET /cart
+/**
+ * GET /cart
+ * Retorna el carrito del usuario autenticado con los datos
+ * del producto (nombre, precio e imagen) de cada item.
+ */
 exports.getCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id })
@@ -13,7 +17,14 @@ exports.getCart = async (req, res, next) => {
     }
 };
 
-// POST /cart/:id
+/**
+ * POST /cart/:id
+ * Agrega un producto al carrito del usuario autenticado.
+ * El :id corresponde al ID del producto a agregar.
+ * La cantidad (qty) se toma del body — si no se envía, usa 1 por defecto.
+ * La validación de stock, disponibilidad y duplicados
+ * se realiza en el middleware validateAddToCart.
+ */
 exports.addToCart = async (req, res, next) => {
     try {
         const foundProduct = await Product.findById(req.params.id);
@@ -23,7 +34,7 @@ exports.addToCart = async (req, res, next) => {
 
         const userCart = await Cart.findOne({ userId: req.user._id });
 
-        // Verificar si el producto ya está en el carrito
+        // Verificación adicional de duplicado en el controller
         const itemExists = userCart.items.find(
             i => i.productId.toString() === req.params.id
         );
@@ -43,7 +54,13 @@ exports.addToCart = async (req, res, next) => {
     }
 };
 
-// PUT /cart/:id
+/**
+ * PUT /cart/:id
+ * Actualiza la cantidad de un producto ya existente en el carrito.
+ * El :id corresponde al ID del producto a actualizar.
+ * La validación de stock y disponibilidad se realiza
+ * en el middleware validateUpdateCart.
+ */
 exports.updateCart = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });
@@ -63,7 +80,12 @@ exports.updateCart = async (req, res, next) => {
     }
 };
 
-// DELETE /cart/:id
+/**
+ * DELETE /cart/:id
+ * Elimina un producto específico del carrito del usuario.
+ * El :id corresponde al ID del producto a eliminar.
+ * Usa filter para reconstruir el array sin ese producto.
+ */
 exports.remove = async (req, res, next) => {
     try {
         const userCart = await Cart.findOne({ userId: req.user._id });

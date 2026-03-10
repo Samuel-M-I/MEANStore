@@ -3,17 +3,27 @@ const Cart     = require('../models/cart');
 const jwt      = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 
+/**
+ * Genera un token JWT con el id y rol del usuario.
+ * Expira en 1 hora.
+ */
 const generateToken = (id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
+/**
+ * POST /auth/register
+ * Registra un nuevo usuario en el sistema con rol 'client' por defecto.
+ * Crea automáticamente un carrito vacío asociado al usuario.
+ * Retorna los datos del usuario y un token JWT.
+ */
 exports.register = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
         const newUser = await User.create({ username, email, password });
 
-        // Crear carrito vacío automáticamente al registrarse
+        // Todo usuario nuevo recibe un carrito vacío automáticamente
         await Cart.create({ userId: newUser._id, items: [] });
 
         res.status(201).json({
@@ -27,6 +37,13 @@ exports.register = async (req, res, next) => {
     }
 };
 
+/**
+ * POST /auth/login
+ * Autentica un usuario con username y password.
+ * Verifica que la contraseña coincida con el hash almacenado en la BD.
+ * Si el carrito no existe por alguna razón, lo crea automáticamente.
+ * Retorna los datos del usuario y un token JWT.
+ */
 exports.login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
@@ -37,7 +54,7 @@ exports.login = async (req, res, next) => {
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return next(new AppError('Credenciales inválidas', 401));
 
-        // Crear carrito si por alguna razón no existe
+        // Seguro de respaldo — crea el carrito si no existe
         const cartExists = await Cart.findOne({ userId: user._id });
         if (!cartExists) {
             await Cart.create({ userId: user._id, items: [] });
@@ -54,6 +71,12 @@ exports.login = async (req, res, next) => {
     }
 };
 
+/**
+ * PATCH /auth/promote-admin
+ * Promueve a un usuario existente al rol de admin.
+ * Requiere la clave secreta ADMIN_SECRET_KEY en el header x-admin-secret.
+ * No puede promover a alguien que ya es admin.
+ */
 exports.promoteAdmin = async (req, res, next) => {
     try {
         const { username } = req.body;
