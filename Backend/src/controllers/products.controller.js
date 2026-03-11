@@ -170,7 +170,7 @@ exports.toggleActive = async (req, res, next) => {
         product.isActive = !product.isActive;
         await product.save();
 
-        res.json({ message: 'Producto desactivado', product });
+        res.json({ message: 'Producto actualizado', product });
     } catch (error) {
         
         next(new AppError(error.message, 500));
