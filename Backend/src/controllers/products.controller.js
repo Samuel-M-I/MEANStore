@@ -161,12 +161,13 @@ exports.updateProducts = async (req, res, next) => {
  * Cambia isActive a false para ocultarlo del catálogo público y de clientes.
  * El producto sigue existiendo en la BD para mantener el historial de ventas.
  */
-exports.deleteProducts = async (req, res, next) => {
+
+exports.toggleActive = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product)
             return next(new AppError('Producto no encontrado', 404));
-        product.isActive = false;
+        product.isActive = !product.isActive;
         await product.save();
 
         res.json({ message: 'Producto desactivado', product });

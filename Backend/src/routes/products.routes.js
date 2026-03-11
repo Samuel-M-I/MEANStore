@@ -9,7 +9,7 @@ const {
     getProductsById,
     createProducts,
     updateProducts,
-    deleteProducts
+    toggleActive
 } = require('../controllers/products.controller');
 
 // 🌐 PÚBLICO ──────────────────────────────────
@@ -23,6 +23,6 @@ router.get('/',       validateDataBase, protect, authorizenRoles('admin', 'worke
 router.get('/:id',    validateDataBase, protect, authorizenRoles('admin', 'worker'), getProductsById);
 router.post('/',      validateDataBase, protect, authorizenRoles('admin', 'worker'), validateProduct,       createProducts);
 router.put('/:id',    validateDataBase, protect, authorizenRoles('admin', 'worker'), validateUpdateProduct, updateProducts);
-router.delete('/:id', validateDataBase, protect, authorizenRoles('admin', 'worker'), deleteProducts);
+router.patch('/:id', validateDataBase, protect, authorizenRoles('admin', 'worker'), toggleActive);
 
 module.exports = router;
