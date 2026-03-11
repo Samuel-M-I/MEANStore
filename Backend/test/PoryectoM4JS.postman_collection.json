@@ -1,0 +1,1513 @@
+{
+  "info": {
+    "_postman_id": "b6344b17-3872-49a8-80c0-e81ce9c454dd",
+    "name": "PoryectoM4JS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43594895",
+    "_collection_link": "https://go.postman.co/collection/43594895-b6344b17-3872-49a8-80c0-e81ce9c454dd?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registrar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"juan\",\r\n    \"email\": \"juan@gmail.com\",\r\n    \"password\": \"111111\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logear",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"client\",\r\n    \"password\": \"Client1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-admin-secret",
+                "value": "clave_super_secreta_admin_2026",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"machu\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/auth/promote-admin",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "auth",
+                "promote-admin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Visualizar Public",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/public",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                "public"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Visualizar Admin",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZhMzkxNTQyNWI4NmNiYTlkZmJjNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzExODU4NywiZXhwIjoxNzczMTIyMTg3fQ.aYa7LMXsr3pYWyekW8Yx1pjmRrdVrJjvoAngiGi5b2w",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Visualizar Client",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZhMzkxNTQyNWI4NmNiYTlkZmJjYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTk2MDQsImV4cCI6MTc3MzEyMzIwNH0.9Y1LfUQPLJ2DgBra7AKTMrwIp9qusVr9NJDBF2DJmU4",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/user",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Visualizar producto id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWY4ZTVhMjQxYzU3ZWM2NDQzNmYyNiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTI5MjIsImV4cCI6MTc3MzExNjUyMn0.TLW9UhZ7xYgQI_anBkOVzNOnc5a629826AYp4kCmPB0",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69af80519e51564fa56004df"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE5NDAyMSwiZXhwIjoxNzczMTk3NjIxfQ.xDvG0NvyvvVGVFdNIGnp571o6PKIFyvQsSRomKAJFHQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Maracas\",\r\n    \"description\": \"jajaja\",\r\n    \"price\": \"9000\",\r\n    \"stock\": 135,\r\n    \"category\": \"Celulares\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE5NDAyMSwiZXhwIjoxNzczMTk3NjIxfQ.xDvG0NvyvvVGVFdNIGnp571o6PKIFyvQsSRomKAJFHQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Martillo\",\r\n    \"price\": \"19000\",\r\n    \"stock\": 0,\r\n    \"category\": \"Accesorios\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69b07b278c373ff3b268b066"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Desactiva producto",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE5NTU2MiwiZXhwIjoxNzczMTk5MTYyfQ.mmmva-uB8Gs_aer24-KfWlMTejsQo3pZWAeC3sjpOhg",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69b07b278c373ff3b268b066"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Visualizar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWY4ZTVhMjQxYzU3ZWM2NDQzNmYyNiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTI5MjIsImV4cCI6MTc3MzExNjUyMn0.TLW9UhZ7xYgQI_anBkOVzNOnc5a629826AYp4kCmPB0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/admin/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWYxM2NhNmQwMzI4NWQ5OGZiNzgyOCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzEwOTA5NywiZXhwIjoxNzczMTEyNjk3fQ.bypIcMsuoi7JV3i9jLTMsNvGgBTaSNYzj5gMAFYuMiM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"role\":\"worker\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/admin/users/:userId/role",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "admin",
+                "users",
+                ":userId",
+                "role"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "69af15b8b4b0a1bf8c45a071"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Activo-Inactivo",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWYxM2NhNmQwMzI4NWQ5OGZiNzgyOCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzEwOTA5NywiZXhwIjoxNzczMTEyNjk3fQ.bypIcMsuoi7JV3i9jLTMsNvGgBTaSNYzj5gMAFYuMiM",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:4000/admin/users/:userId/active",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "admin",
+                "users",
+                ":userId",
+                "active"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "69af15b8b4b0a1bf8c45a071"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Visualizar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzYyNzEsImV4cCI6MTc3MzE3OTg3MX0.pb73I8uMQ8ThwsxDjA5yNY0XTvCcvDghxNmQscfchEw",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:4000/cart",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar carro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3ODE0MSwiZXhwIjoxNzczMTgxNzQxfQ.15xTl_Ld9yPPjKJTo7kHyC6_cMGuUrTXhJrExJEvJEE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"qty\":28\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:4000/cart/:id",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "cart",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69b07b278c373ff3b268b066"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar carro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3ODE0MSwiZXhwIjoxNzczMTgxNzQxfQ.15xTl_Ld9yPPjKJTo7kHyC6_cMGuUrTXhJrExJEvJEE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"qty\":10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:4000/cart/:id",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "cart",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69b07b278c373ff3b268b066"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar carro",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3ODE0MSwiZXhwIjoxNzczMTgxNzQxfQ.15xTl_Ld9yPPjKJTo7kHyC6_cMGuUrTXhJrExJEvJEE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:4000/cart/:id",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "cart",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69af8ec7241c57ec64436f34"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "item": [
+        {
+          "name": "Confirmar Compra",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWY4ZTVhMjQxYzU3ZWM2NDQzNmYyNiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTI5MjIsImV4cCI6MTc3MzExNjUyMn0.TLW9UhZ7xYgQI_anBkOVzNOnc5a629826AYp4kCmPB0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:4000/sales/add",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "sales",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Historial Individual",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWY4ZTVhMjQxYzU3ZWM2NDQzNmYyNiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTI5MjIsImV4cCI6MTc3MzExNjUyMn0.TLW9UhZ7xYgQI_anBkOVzNOnc5a629826AYp4kCmPB0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:4000/sales/mySales",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "sales",
+                "mySales"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Historial General",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWY4ZTVhMjQxYzU3ZWM2NDQzNmYyNiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxMTI5MjIsImV4cCI6MTc3MzExNjUyMn0.TLW9UhZ7xYgQI_anBkOVzNOnc5a629826AYp4kCmPB0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:4000/sales",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "sales"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test",
+      "item": [
+        {
+          "name": "Auth — Sin token",
+          "item": [
+            {
+              "name": "Test 1 — Registrar usuario nuevo",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"testuser\", \r\n    \"email\": \"test@test.com\", \r\n    \"password\": \"123456\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 2 — Registrar con body vacío",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/auth/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 3 — Registrar con email duplicado",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"testuser2\", \r\n    \"email\": \"test@test.com\", \r\n    \"password\": \"123456\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 4 — Registrar con username duplicado",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"testuser\", \r\n    \"email\": \"otro@test.com\", \r\n    \"password\": \"123456\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 5 — Login correcto",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"client\", \r\n    \"password\": \"Client1234\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 6 — Login con password incorrecta",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"client\", \r\n    \"password\": \"wrongpassword\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 7 — Login con usuario inexistente",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"noexiste\", \r\n    \"password\": \"123456\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Middleware — Token",
+          "item": [
+            {
+              "name": "Test 8 — Request sin token",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 9 — Request con token falso",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer abc123",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Middleware — Roles",
+          "item": [
+            {
+              "name": "10.1",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"client\", \r\n    \"password\": \"Client1234\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 10 — Cliente intenta ver todos los productos",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzQzMjcsImV4cCI6MTc3MzE3NzkyN30.7IJXR21jAJfqLyGhcqjGA19hO31W9IzRtb2c3T01bzY",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 11 — Cliente intenta crear producto",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzQzMjcsImV4cCI6MTc3MzE3NzkyN30.7IJXR21jAJfqLyGhcqjGA19hO31W9IzRtb2c3T01bzY",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "12.1",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"worker\", \r\n    \"password\": \"Worker1234\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 12 — Worker intenta ver usuarios admin",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MCIsInJvbGUiOiJ3b3JrZXIiLCJpYXQiOjE3NzMxNzQ1MzIsImV4cCI6MTc3MzE3ODEzMn0.YMWQHWTJ5I1-smdq7m6bVQnf2W2A5-N0HTElRWeCD2A",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/admin/users",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Productos",
+          "item": [
+            {
+              "name": "13.1",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"username\": \"admin\", \r\n    \"password\": \"Admin1234\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 13 — Crear producto sin nombre",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3NTM0MiwiZXhwIjoxNzczMTc4OTQyfQ.inSWSs0x_LFS62zXv2YWDoIivLqsXs9BwSRvWcb-zcA",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"price\": 100, \r\n    \"stock\": 5, \r\n    \"category\": \"Gaming\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 14 — Crear producto con stock decimal",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3NTM0MiwiZXhwIjoxNzczMTc4OTQyfQ.inSWSs0x_LFS62zXv2YWDoIivLqsXs9BwSRvWcb-zcA",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"name\": \"Test\", \r\n    \"price\": 100, \r\n    \"stock\": 2.5, \r\n    \"category\": \"Gaming\" \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 15 — Crear producto con descripción muy larga",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3NTM0MiwiZXhwIjoxNzczMTc4OTQyfQ.inSWSs0x_LFS62zXv2YWDoIivLqsXs9BwSRvWcb-zcA",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"name\": \"Test\", \r\n    \"price\": 100, \r\n    \"stock\": 5, \r\n    \"category\": \"Gaming\", \r\n    \"description\": \"Este es un texto de prueba diseñado específicamente para exceder el límite permitido de quinientos caracteres en la base de datos de MongoDB. Al llegar al carácter número quinientos uno, el middleware de validación debería interceptar la petición y devolver un error de validación en lugar de permitir que los datos se guarden en la colección. Esto es fundamental para mantener la integridad de los datos en el backend de Nodejs y asegurar que el almacenamiento no se vea comprometido por textos excesivos.a\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 16 — Producto inexistente",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3NTM0MiwiZXhwIjoxNzczMTc4OTQyfQ.inSWSs0x_LFS62zXv2YWDoIivLqsXs9BwSRvWcb-zcA",
+                    "type": "text"
+                  },
+                  {
+                    "key": "",
+                    "value": "",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "http://localhost:4000/products/:id",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "products",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "000000000000000000000000"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Carrito",
+          "item": [
+            {
+              "name": "Test 17 — Agregar producto con qty mayor al stock",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzU4ODQsImV4cCI6MTc3MzE3OTQ4NH0.a9znCez6ybGXc7hjj8zwj62qIJ_gsvDH8yxEuBhR_Kw",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"qty\": 999 \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/cart/:id",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "cart",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69b07b278c373ff3b268b066"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 18 — Agregar producto duplicado al carrito",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzU4ODQsImV4cCI6MTc3MzE3OTQ4NH0.a9znCez6ybGXc7hjj8zwj62qIJ_gsvDH8yxEuBhR_Kw",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n    \"qty\": 1 \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/cart/:id",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "cart",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69b07b278c373ff3b268b066"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Ventas",
+          "item": [
+            {
+              "name": "Test 19 — Confirmar compra exitosa",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzYyNzEsImV4cCI6MTc3MzE3OTg3MX0.pb73I8uMQ8ThwsxDjA5yNY0XTvCcvDghxNmQscfchEw",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/sales/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "sales",
+                    "add"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Test 20 — Confirmar compra con carrito vacío",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA2MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NzMxNzYyNzEsImV4cCI6MTc3MzE3OTg3MX0.pb73I8uMQ8ThwsxDjA5yNY0XTvCcvDghxNmQscfchEw",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/sales/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "sales",
+                    "add"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "paginacion",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE3NzM2NywiZXhwIjoxNzczMTgwOTY3fQ.y7s14RFTvN5hWXzNoDn8gAdf1G95p6mSmwaJJUvMrk4",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/products?q=&page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjA3YjI3OGMzNzNmZjNiMjY4YjA1ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzE5NDAyMSwiZXhwIjoxNzczMTk3NjIxfQ.xDvG0NvyvvVGVFdNIGnp571o6PKIFyvQsSRomKAJFHQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/admin/dashboard",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "admin",
+                "dashboard"
+              ],
+              "query": [
+                {
+                  "key": null,
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

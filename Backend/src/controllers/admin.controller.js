@@ -103,12 +103,6 @@ exports.getDashboard = async (req, res, next) => {
             isActive: true
         }).select('name stock category');
 
-        // Busca productos activos que ya no tienen unidades disponibles
-        const sinStock = await Product.find({
-            stock:    0,
-            isActive: true
-        }).select('name category');
-
         // Conteos generales del sistema
         const totalUsuarios  = await User.countDocuments();
         const totalProductos = await Product.countDocuments({ isActive: true });
@@ -118,7 +112,7 @@ exports.getDashboard = async (req, res, next) => {
             resumenGeneral: { totalUsuarios, totalProductos, totalVentas },
             ventasDelDia:   { cantidad: totalVentasHoy, ingresos: ingresosTotales },
             ultimasVentas,
-            inventario:     { stockBajo, sinStock }
+            inventario:     { stockBajo }
         });
     } catch (error) {
         
